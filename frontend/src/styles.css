@@ -1,0 +1,405 @@
+/* CSS Variables for Maintainability */
+:root {
+  --primary-color: #007bff;
+  --primary-hover: #0056b3;
+  --success-color: #28a745;
+  --success-hover: #218838;
+  --danger-color: #dc3545;
+  --danger-hover: #c82333;
+  --neutral-color: #6c757d;
+  --neutral-hover: #5a6268;
+  --fab-color: #ff4500;
+  --fab-hover: #e63e00;
+  --light-bg: #f4f4f4;
+  --light-text: #333;
+  --light-card: #fff;
+  --light-shadow: rgba(0, 0, 0, 0.1);
+  --dark-bg: #1a1a1a;
+  --dark-text: #ddd;
+  --dark-card: #2c2c2c;
+  --dark-shadow: rgba(255, 255, 255, 0.1);
+  --border-radius: 8px;
+  --transition: 0.3s ease;
+  --font-family: 'Arial', system-ui, sans-serif;
+}
+
+/* Global Styles */
+body {
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 0;
+  background-color: var(--light-bg);
+  color: var(--light-text);
+  transition: background-color var(--transition), color var(--transition);
+  line-height: 1.6;
+}
+
+body.dark-mode {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: var(--light-card);
+  box-shadow: 0 2px 4px var(--light-shadow);
+  transition: background-color var(--transition);
+}
+
+body.dark-mode header {
+  background-color: var(--dark-card);
+  box-shadow: 0 2px 4px var(--dark-shadow);
+}
+
+/* Inputs and Buttons */
+input[type="text"],
+textarea {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color var(--transition);
+}
+
+input[type="text"]:focus,
+textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition);
+  font-weight: 500;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Product Card */
+.product-card {
+  background-color: var(--light-card);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px var(--light-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color var(--transition);
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn 0.5s ease-in;
+}
+
+body.dark-mode .product-card {
+  background-color: var(--dark-card);
+  box-shadow: 0 4px 8px var(--dark-shadow);
+}
+
+.product-card:hover {
+  transform: translateY(-5px) rotate(1deg); /* Unique tilt effect */
+  box-shadow: 0 8px 16px var(--light-shadow);
+}
+
+body.dark-mode .product-card:hover {
+  box-shadow: 0 8px 16px var(--dark-shadow);
+}
+
+/* Animated Gradient Overlay */
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  z-index: 0;
+  transition: opacity var(--transition);
+}
+
+.product-card:hover::before {
+  opacity: 0.25;
+}
+
+.product-card.electronics::before {
+  background: linear-gradient(45deg, #00bfff, #1e90ff, #00bfff);
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite;
+}
+
+.product-card.clothing::before {
+  background: linear-gradient(45deg, #32cd32, #228b22, #32cd32);
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite;
+}
+
+.product-card.books::before {
+  background: linear-gradient(45deg, #ffd700, #ff8c00, #ffd700);
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite;
+}
+
+.product-card::before {
+  background: linear-gradient(45deg, #ccc, #aaa, #ccc);
+  background-size: 200% 200%;
+  animation: gradientShift 5s ease infinite;
+}
+
+.product-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Keyframe for Gradient Animation */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Category Avatar */
+.category-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  transition: background-color var(--transition);
+}
+
+body.dark-mode .category-avatar {
+  background-color: #444;
+}
+
+/* Buttons in Card */
+.product-card button {
+  margin-right: 0.5rem;
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.product-card button:hover {
+  background-color: var(--primary-hover);
+}
+
+.product-card button.delete {
+  background-color: var(--danger-color);
+}
+
+.product-card button.delete:hover {
+  background-color: var(--danger-hover);
+}
+
+/* Modal Form */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.modal-content {
+  background: var(--light-card);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  width: min(90%, 400px);
+  box-shadow: 0 4px 12px var(--light-shadow);
+  transition: background-color var(--transition);
+}
+
+body.dark-mode .modal-content {
+  background: var(--dark-card);
+  box-shadow: 0 4px 12px var(--dark-shadow);
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-content input,
+.modal-content textarea {
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  transition: border-color var(--transition);
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.modal-content button {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.modal-content button:hover {
+  background-color: var(--success-hover);
+}
+
+.modal-content button.cancel {
+  background-color: var(--neutral-color);
+  margin-left: 0.5rem;
+}
+
+.modal-content button.cancel:hover {
+  background-color: var(--neutral-hover);
+}
+
+/* Floating Action Button (FAB) */
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background-color: var(--fab-color);
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  box-shadow: 0 4px 12px var(--light-shadow);
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.fab:hover {
+  background-color: var(--fab-hover);
+  transform: scale(1.1);
+}
+
+.fab:focus {
+  outline: 2px solid var(--fab-color);
+  outline-offset: 2px;
+}
+
+body.dark-mode .fab {
+  box-shadow: 0 4px 12px var(--dark-shadow);
+}
+
+/* Dark Mode Toggle */
+.dark-toggle {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: transform var(--transition);
+}
+
+.dark-toggle:hover {
+  transform: scale(1.2);
+}
+
+/* Error Messages */
+.error {
+  color: #e63946;
+  font-size: 0.75rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .modal-content {
+    width: min(90%, 320px);
+  }
+
+  header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  input[type="text"] {
+    width: 100%;
+  }
+
+  .fab {
+    bottom: 1rem;
+    right: 1rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    padding: 1rem;
+  }
+
+  .product-card h3 {
+    font-size: 1rem;
+  }
+
+  .category-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+}
