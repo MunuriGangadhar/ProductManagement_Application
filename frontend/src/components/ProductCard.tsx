@@ -12,17 +12,20 @@ const ProductCard:React.FC<ProductCardProps>=({ product,onDelete,onEdit})=>{
   return (
     <div className={`product-card ${categoryClass}`}>
       <div className="category-avatar">{product.category.charAt(0)}</div>
+
       <h3>{product.name}</h3>
       <p>${product.price.toFixed(2)}</p>
       <p>{product.description}</p>
       <p><em>{product.category}</em></p>
-      <button onClick={() => onEdit(product)}>Edit</button>
-      <button className="delete" onClick={() => {
-        if (window.confirm('Are you sure you want to delete this product?')) {
+
+      <button onClick={()=> onEdit(product)}>Edit</button>
+      <button className="delete" onClick={()=>{
+        if(window.confirm('Are you sure you want to delete this product?')) {
           onDelete(product._id!);
-        }
-      }}>
+        }}}>
+
         Delete
+        
       </button>
     </div>
   );

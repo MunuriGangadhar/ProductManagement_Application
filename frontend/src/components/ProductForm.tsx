@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-// import { Product } from '../../backend/src/types';
-import { Product } from '../types';
+import React,{useState,useEffect } from 'react';
+import {Product} from '../types';
 
 interface ProductFormProps {
-  product?: Product;
-  onSubmit: (data: Product) => void;
+  product?:Product;
+  onSubmit:(data:Product)=>void;
   onCancel: () => void;
 }
 
