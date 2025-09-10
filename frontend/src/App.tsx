@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import './styles.css';
 import ProductList from './components/ProductList';
-import DarkModeToggle from './components/DarkModeToggle';
+import { Product } from './types';
+import './styles.css';
 
 const App: React.FC = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(localStorage.getItem('darkMode') === 'true');
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    return localStorage.getItem('darkMode') === 'true';
+  });
+  const [showForm, setShowForm] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<Product | undefined>(undefined);
 
   useEffect(() => {
     if (darkMode) {
@@ -16,14 +20,41 @@ const App: React.FC = () => {
   }, [darkMode]);
 
   return (
-    <div>
+    <div className="app">
       <header>
-        <h1>Product Management</h1>
-        <div>
-          <DarkModeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
-        </div>
+        <h1>PaisaWapas</h1>
+        <button
+          className="dark-toggle"
+          onClick={() => setDarkMode(!darkMode)}
+          aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+        >
+          {darkMode ? '☀️' : '🌙'}
+        </button>
       </header>
-      <ProductList />
+      <section className="hero">
+        <h2>Discover Our Products</h2>
+        <p>Browse, add, and manage your favorite products with ease.</p>
+        <button
+          className="cta-button"
+          onClick={() => {
+            setShowForm(true);
+            setEditingProduct(undefined); // Ensure form is in "add" mode
+          }}
+        >
+          Add a Product
+        </button>
+      </section>
+      <main>
+        <ProductList
+          showForm={showForm}
+          setShowForm={setShowForm}
+          editingProduct={editingProduct}
+          setEditingProduct={setEditingProduct}
+        />
+      </main>
+      <footer>
+        <p>&copy; 2025 PaisaWapas. All rights reserved.</p>
+      </footer>
     </div>
   );
 };

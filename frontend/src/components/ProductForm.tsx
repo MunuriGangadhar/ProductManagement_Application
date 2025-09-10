@@ -1,32 +1,24 @@
 import React, { useState, useEffect } from 'react';
+// import { Product } from '../../backend/src/types';
 import { Product } from '../types';
 
-interface Props {
-  product?: Product;  // Optional for edit mode
+interface ProductFormProps {
+  product?: Product;
   onSubmit: (data: Product) => void;
   onCancel: () => void;
 }
 
-const ProductForm: React.FC<Props> = ({ product, onSubmit, onCancel }) => {
-  const [name, setName] = useState('');
-  const [price, setPrice] = useState('');
-  const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
+const ProductForm: React.FC<ProductFormProps> = ({ product, onSubmit, onCancel }) => {
+  const [name, setName] = useState(product?.name || '');
+  const [price, setPrice] = useState(product?.price.toString() || '');
+  const [description, setDescription] = useState(product?.description || '');
+  const [category, setCategory] = useState(product?.category || '');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  useEffect(() => {
-    if (product) {
-      setName(product.name);
-      setPrice(product.price.toString());
-      setDescription(product.description);
-      setCategory(product.category);
-    }
-  }, [product]);
-
-  const validate = (): boolean => {
+  const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!name) newErrors.name = 'Name is required';
-    if (!price || isNaN(Number(price)) || Number(price) <= 0) newErrors.price = 'Valid positive price is required';
+    if (!price || isNaN(Number(price)) || Number(price) <= 0) newErrors.price = 'Price must be a positive number';
     if (!description) newErrors.description = 'Description is required';
     if (!category) newErrors.category = 'Category is required';
     setErrors(newErrors);
@@ -49,37 +41,38 @@ const ProductForm: React.FC<Props> = ({ product, onSubmit, onCancel }) => {
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>{product ? 'Edit Product' : 'Add Product'}</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Product Name"
             value={name}
             onChange={e => setName(e.target.value)}
           />
-          {errors.name && <span className="error">{errors.name}</span>}
+          {errors.name && <div className="error">{errors.name}</div>}
           <input
             type="number"
             placeholder="Price"
             value={price}
             onChange={e => setPrice(e.target.value)}
           />
-          {errors.price && <span className="error">{errors.price}</span>}
+          {errors.price && <div className="error">{errors.price}</div>}
           <textarea
             placeholder="Description"
             value={description}
             onChange={e => setDescription(e.target.value)}
           />
-          {errors.description && <span className="error">{errors.description}</span>}
+          {errors.description && <div className="error">{errors.description}</div>}
           <input
             type="text"
             placeholder="Category"
             value={category}
             onChange={e => setCategory(e.target.value)}
           />
-          {errors.category && <span className="error">{errors.category}</span>}
-          <button type="submit">Save</button>
-          <button type="button" className="cancel" onClick={onCancel}>Cancel</button>
+          {errors.category && <div className="error">{errors.category}</div>}
+          <div>
+            <button type="submit">{product ? 'Update' : 'Add'} Product</button>
+            <button type="button" className="cancel" onClick={onCancel}>Cancel</button>
+          </div>
         </form>
       </div>
     </div>
