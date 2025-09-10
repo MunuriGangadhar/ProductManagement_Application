@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React,{useState,useEffect} from 'react';
 import ProductList from './components/ProductList';
-import { Product } from './types';
+import {Product} from './types';
 import './styles.css';
 
-const App: React.FC = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    return localStorage.getItem('darkMode') === 'true';
+const App: React.FC=()=>{
+  const [darkMode,setDarkMode]=useState<boolean>(()=>{
+    return localStorage.getItem('darkMode')==='true';
   });
-  const [showForm, setShowForm] = useState(false);
-  const [editingProduct, setEditingProduct] = useState<Product | undefined>(undefined);
+  const [showForm,setShowForm]=useState(false);
+  const [editingProduct,setEditingProduct] = useState<Product|undefined>(undefined);
 
-  useEffect(() => {
-    if (darkMode) {
+  useEffect(()=>{
+    if (darkMode){
       document.body.classList.add('dark-mode');
     } else {
       document.body.classList.remove('dark-mode');
     }
-    localStorage.setItem('darkMode', darkMode.toString());
-  }, [darkMode]);
+    localStorage.setItem('darkMode',darkMode.toString());
+  },[darkMode]);
 
   return (
     <div className="app">
@@ -25,10 +25,11 @@ const App: React.FC = () => {
         <h1>PaisaWapas</h1>
         <button
           className="dark-toggle"
-          onClick={() => setDarkMode(!darkMode)}
-          aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-        >
-          {darkMode ? '☀️' : '🌙'}
+          onClick={()=>setDarkMode(!darkMode)}
+          aria-label={darkMode?'Switch to light mode':'Switch to dark mode'}>
+
+          {darkMode?'☀️':'🌙'}
+
         </button>
       </header>
       <section className="hero">
@@ -38,9 +39,8 @@ const App: React.FC = () => {
           className="cta-button"
           onClick={() => {
             setShowForm(true);
-            setEditingProduct(undefined); // Ensure form is in "add" mode
-          }}
-        >
+            setEditingProduct(undefined); 
+          }}>
           Add a Product
         </button>
       </section>

@@ -3,57 +3,56 @@ import axios from 'axios';
 import ProductCard from './ProductCard';
 import ProductForm from './ProductForm';
 import Toast from './Toast';
-// import { Product } from '../../backend/src/types';
-import { Product } from '../types';
+import {Product} from '../types';
 
 interface ToastMessage {
-  id: number;
-  message: string;
-  type: 'success' | 'error';
+  id:number;
+  message:string;
+  type:'success'|'error';
 }
 
-interface ProductListProps {
-  showForm: boolean;
-  setShowForm: (value: boolean) => void;
-  editingProduct: Product | undefined;
-  setEditingProduct: (product: Product | undefined) => void;
+interface ProductListProps{
+  showForm:boolean;
+  setShowForm:(value:boolean)=>void;
+  editingProduct:Product | undefined;
+  setEditingProduct:(product: Product | undefined)=>void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({ showForm, setShowForm, editingProduct, setEditingProduct }) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [search, setSearch] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
-  const [priceMin, setPriceMin] = useState('');
-  const [priceMax, setPriceMax] = useState('');
-  const [dateFilter, setDateFilter] = useState('all');
-  const [sortAsc, setSortAsc] = useState(true);
-  const [toasts, setToasts] = useState<ToastMessage[]>([]);
+const ProductList: React.FC<ProductListProps>=({showForm,setShowForm,editingProduct,setEditingProduct})=>{
+  const [products,setProducts]=useState<Product[]>([]);
+  const [search,setSearch]=useState('');
+  const [categoryFilter,setCategoryFilter]=useState('');
+  const [priceMin,setPriceMin]=useState('');
+  const [priceMax,setPriceMax]=useState('');
+  const [dateFilter,setDateFilter]=useState('all');
+  const [sortAsc,setSortAsc]=useState(true);
+  const [toasts,setToasts]=useState<ToastMessage[]>([]);
 
-  useEffect(() => {
+  useEffect(()=>{
     fetchProducts();
-  }, []);
+  },[]);
 
-  const fetchProducts = async () => {
+  const fetchProducts=async()=>{
     try {
-      const res = await axios.get('/api/products');
+      const res=await axios.get('/api/products');
       setProducts(res.data);
-    } catch (err) {
-      addToast('Failed to fetch products', 'error');
+    }catch(err){
+      addToast('Failed to fetch products','error');
     }
   };
 
-  const addToast = (message: string, type: 'success' | 'error') => {
-    const id = Date.now();
-    setToasts(prev => [...prev, { id, message, type }]);
-    setTimeout(() => {
-      setToasts(prev => prev.filter(toast => toast.id !== id));
-    }, 3000);
+  const addToast=(message:string,type:'success'|'error')=>{
+    const id=Date.now();
+    setToasts(prev=>[...prev,{id,message,type}]);
+    setTimeout(()=>{
+      setToasts(prev=>prev.filter(toast=>toast.id!==id));
+    },3000);
   };
 
-  const addOrUpdateProduct = async (data: Product) => {
+  const addOrUpdateProduct=async(data: Product)=>{
     try {
-      if (data._id) {
-        await axios.put(`/api/products/${data._id}`, data);
+      if (data._id){
+        await axios.put(`/api/products/${data._id}`,data);
         addToast('Product updated successfully', 'success');
       } else {
         await axios.post('/api/products', data);
@@ -67,7 +66,7 @@ const ProductList: React.FC<ProductListProps> = ({ showForm, setShowForm, editin
     }
   };
 
-  const deleteProduct = async (id: string) => {
+  const deleteProduct=async(id:string)=>{
     try {
       await axios.delete(`/api/products/${id}`);
       addToast('Product deleted successfully', 'success');
@@ -77,8 +76,8 @@ const ProductList: React.FC<ProductListProps> = ({ showForm, setShowForm, editin
     }
   };
 
-  const filteredProducts = products
-    .filter(p => {
+  const filteredProducts=products
+    .filter(p =>{
       const searchLower = search.toLowerCase();
       const matchesSearch =
         p.name.toLowerCase().includes(searchLower) ||
