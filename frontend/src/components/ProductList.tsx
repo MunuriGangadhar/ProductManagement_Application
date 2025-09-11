@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React,{useState,useEffect,useCallback} from 'react';
 import axios from 'axios';
 import ProductCard from './ProductCard';
 import ProductForm from './ProductForm';
@@ -28,18 +28,18 @@ const ProductList: React.FC<ProductListProps>=({showForm,setShowForm,editingProd
   const [sortAsc,setSortAsc]=useState(true);
   const [toasts,setToasts]=useState<ToastMessage[]>([]);
 
-  useEffect(()=>{
-    fetchProducts();
-  },[]);
-
-  const fetchProducts=async()=>{
+const fetchProducts=useCallback(async()=>{
     try {
       const res=await axios.get('/api/products');
       setProducts(res.data);
-    }catch(err){
+    } catch(err){
       addToast('Failed to fetch products','error');
     }
-  };
+  },[]); 
+
+  useEffect(()=>{
+    fetchProducts();
+  },[fetchProducts]);
 
   const addToast=(message:string,type:'success'|'error')=>{
     const id=Date.now();
@@ -53,26 +53,26 @@ const ProductList: React.FC<ProductListProps>=({showForm,setShowForm,editingProd
     try {
       if (data._id){
         await axios.put(`/api/products/${data._id}`,data);
-        addToast('Product updated successfully', 'success');
+        addToast('Product updated successfully','success');
       } else {
-        await axios.post('/api/products', data);
-        addToast('Product added successfully', 'success');
+        await axios.post('/api/products',data);
+        addToast('Product added successfully','success');
       }
       fetchProducts();
       setShowForm(false);
       setEditingProduct(undefined);
     } catch (err) {
-      addToast('Failed to save product', 'error');
+      addToast('Failed to save product','error');
     }
   };
 
   const deleteProduct=async(id:string)=>{
     try {
       await axios.delete(`/api/products/${id}`);
-      addToast('Product deleted successfully', 'success');
+      addToast('Product deleted successfully','success');
       fetchProducts();
     } catch (err) {
-      addToast('Failed to delete product', 'error');
+      addToast('Failed to delete product','error');
     }
   };
 
