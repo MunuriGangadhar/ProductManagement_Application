@@ -7,7 +7,7 @@ const app=express();
 app.use(cors({
   origin: [
     'http://localhost:3000', 
-    'https://product-management-application-sigma.vercel.app/'
+    'https://product-management-application-sigma.vercel.app'
   ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type']
